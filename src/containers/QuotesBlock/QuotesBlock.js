@@ -40,12 +40,15 @@ const QuotesBlock = () => {
 
   const deleteQuote = async (id) => {
     document.getElementById('preloader').style.display = 'block';
-    await axios.delete('quotes/' + id + '.json');
+    try {
+      await axios.delete('quotes/' + id + '.json');
 
-    const {data} = await axios('/quotes.json');
+      const {data} = await axios('/quotes.json');
 
-    setQuotes(data);
-
+      setQuotes(data);
+    } catch (e) {
+      console.error(e.message);
+    }
     history.replace('/');
     document.getElementById('preloader').style.display = 'none';
   };
