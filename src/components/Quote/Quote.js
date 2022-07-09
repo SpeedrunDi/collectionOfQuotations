@@ -1,5 +1,6 @@
 import React from 'react';
 import './Quote.css';
+import Button from "../UI/Button/Button";
 
 const Quote = (props) => (
   <div className="quote">
@@ -8,8 +9,8 @@ const Quote = (props) => (
       <p>- {props.author}</p>
     </div>
     <div className="buttonsBlock">
-      <span>Edit</span>
-      <span>Delete</span>
+      <Button type="submit">Edit</Button>
+      <Button onClick={props.onDelete} type="submit" btnType="danger">Delete</Button>
     </div>
   </div>
 )
