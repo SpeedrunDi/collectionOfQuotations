@@ -20,3 +20,7 @@
 .link:last-child {
     border-right: none;
 }
+
+.active {
+    color: #4830F0;
+}

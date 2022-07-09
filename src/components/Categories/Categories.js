@@ -1,9 +1,10 @@
 import React from 'react';
 import {CATEGORIES} from "../../constant";
 import {NavLink} from "react-router-dom";
+import './Categories.css';
 
 const Categories = ({onClick}) => (
-  <ul>
+  <ul className="list">
     {
       CATEGORIES.map(category => (
         <li key={'cate' + category.id}>

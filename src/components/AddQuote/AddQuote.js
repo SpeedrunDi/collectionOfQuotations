@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import Backdrop from "../UI/Backdrop/Backdrop";
 import {useHistory} from "react-router-dom";
@@ -6,7 +6,7 @@ import Button from "../UI/Button/Button";
 import {CATEGORIES} from "../../constant";
 import './AddQuote.css';
 
-const AddQuote = () => {
+const AddQuote = ({id}) => {
   const [newQuote, setNewQuote] = useState({
     author: '',
     text: '',
@@ -25,6 +25,18 @@ const AddQuote = () => {
     }));
   };
 
+  useEffect(() => {
+    if (id) {
+      const currentData = async () => {
+        const {data} = await axios('/quotes/' + id + '.json');
+
+        setNewQuote(data);
+      };
+
+      currentData().catch(e => console.error(e.message));
+    }
+  }, [id]);
+
   const onSend = async (e) => {
     e.preventDefault();
 
@@ -40,11 +52,19 @@ const AddQuote = () => {
 
     document.getElementById('preloader').style.display = 'block';
     try {
-      await axios.post('/quotes.json',{
-        author: newQuote.author,
-        category: newQuote.category,
-        text: newQuote.text
-      });
+      if (id) {
+        await axios.patch('/quotes/' + id + '.json', {
+          author: newQuote.author,
+          category: newQuote.category,
+          text: newQuote.text
+        });
+      } else {
+        await axios.post('/quotes.json',{
+          author: newQuote.author,
+          category: newQuote.category,
+          text: newQuote.text
+        });
+      }
 
       history.replace('/');
       document.getElementById('preloader').style.display = 'none';
@@ -58,10 +78,10 @@ const AddQuote = () => {
     <>
       <Backdrop show={show} clicked={() => history.goBack()}/>
       <div className="addQuoteBlock">
-        <h2 className="addQuoteTitle">{'Add new quote'}</h2>
+        <h2 className="addQuoteTitle">{id ? 'Edit current quote' : 'Add new quote'}</h2>
         <div>
           <label htmlFor="category">Category</label>
-          <select name="category" id="category" onChange={onChange}>
+          <select name="category" id="category" onChange={onChange} value={newQuote.category}>
             {
               CATEGORIES.map((category, index) => (
                 <option value={category.id} key={category.id + index}>
@@ -73,13 +93,13 @@ const AddQuote = () => {
         </div>
         <div>
           <label htmlFor="author" className="label">Author</label>
-          <input type="text" className="input" id="author" value={newQuote.title} onChange={onChange} />
+          <input type="text" className="input" id="author" value={newQuote.author} onChange={onChange} />
         </div>
         <div>
           <label htmlFor="text" className="label">Quote text</label>
           <textarea className="textarea" id="text" value={newQuote.text} onChange={onChange} rows="4" />
         </div>
-        <Button onClick={onSend} type="submit">{'Send'}</Button>
+        <Button onClick={onSend} type="submit">{id ? 'Edit' : 'Send'}</Button>
       </div>
     </>
   );

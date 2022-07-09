@@ -6,10 +6,10 @@ const Quote = (props) => (
   <div className="quote">
     <div className="textBlock">
       <p className="text">"{props.text}"</p>
-      <p>- {props.author}</p>
+      <p className="author">&mdash; {props.author}</p>
     </div>
     <div className="buttonsBlock">
-      <Button type="submit">Edit</Button>
+      <Button onClick={props.onEdit} type="submit">Edit</Button>
       <Button onClick={props.onDelete} type="submit" btnType="danger">Delete</Button>
     </div>
   </div>

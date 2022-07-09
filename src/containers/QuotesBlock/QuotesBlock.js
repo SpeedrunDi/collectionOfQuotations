@@ -3,17 +3,19 @@ import Categories from "../../components/Categories/Categories";
 import GetQuotes from "../../components/GetQuotes/GetQuotes";
 import {useEffect} from "react";
 import axios from "axios";
-import {Route, Switch, useRouteMatch} from "react-router-dom";
+import {Route, Switch, useHistory, useRouteMatch} from "react-router-dom";
 import QuotesCycle from "../../components/QuotesCycle/QuotesCycle";
-import addQuote from "../../components/AddQuote/AddQuote";
-import './QuotesBlock.css';
 import Loader from "../../components/UI/Loader/Loader";
+import AddQuote from "../../components/AddQuote/AddQuote";
+import './QuotesBlock.css';
 
 const QuotesBlock = () => {
   const [category, setCategory] = useState(null);
   const [quotes, setQuotes] = useState(null);
+  const [id, setId] = useState(null);
 
   const match = useRouteMatch();
+  const history = useHistory();
 
   useEffect(() => {
     if (match.isExact === true) {
@@ -28,6 +30,7 @@ const QuotesBlock = () => {
       } catch (e) {
         console.error(e.message);
       }
+      setCategory(null);
     }
   }, [match.isExact]);
 
@@ -39,15 +42,18 @@ const QuotesBlock = () => {
     document.getElementById('preloader').style.display = 'block';
     await axios.delete('quotes/' + id + '.json');
 
-    const fetchData = async () => {
-      const {data} = await axios('/quotes.json');
+    const {data} = await axios('/quotes.json');
 
-      setQuotes(data);
-    };
+    setQuotes(data);
 
-    fetchData().catch(e => console.error(e.message));
+    history.replace('/');
     document.getElementById('preloader').style.display = 'none';
   };
+
+  const editQuote = (id) => {
+    history.push('/edit-quote/' + id);
+    setId(id);
+  }
 
   return (
     <>
@@ -59,9 +65,21 @@ const QuotesBlock = () => {
         <div className="quotes">
           <h2 className="quotesTitle">{category ? category : "All"}</h2>
           <Switch>
-            <Route path="/" exact render={() => quotes && <QuotesCycle quotes={quotes} onDelete={deleteQuote}/>} />
-            <Route path={"/quotes/" + category} render={() => category && <GetQuotes category={category}/>} />
-            <Route path={"/add-quote"} component={addQuote} />
+            <Route path="/" exact render={() => quotes ?
+              <QuotesCycle quotes={quotes}
+                           onDelete={deleteQuote}
+                           onEdit={editQuote}
+              /> : <p style={{textAlign: "center", fontSize: "24px"}}>No quotes yet</p>}
+
+            />
+            <Route path={"/quotes/" + category} render={() => category &&
+              <GetQuotes category={category}
+                         onDelete={deleteQuote}
+                         onEdit={editQuote}
+              />}
+            />
+            <Route path={"/add-quote"} render={() => <AddQuote/>} />
+            <Route path={"/edit-quote/" + id } render={() => id && <AddQuote  id={id}/>} />
           </Switch>
         </div>
       </div>
