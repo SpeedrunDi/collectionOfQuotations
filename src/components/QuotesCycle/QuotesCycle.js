@@ -4,7 +4,7 @@ import Quote from "../Quote/Quote";
 const QuotesCycle = ({quotes, onDelete, onEdit}) => (
   <>
     {
-      Object.keys(quotes).map(key => (
+      Object.keys(quotes).reverse().map(key => (
         <Quote author={quotes[key].author}
                text={quotes[key].text}
                key={key}
