@@ -1,0 +1,21 @@
+.btn {
+    cursor: pointer;
+    display: block;
+    color: white;
+    padding: 10px 15px;
+    margin: 10px 20px 10px auto;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right, #9EEFE1 0%, #4830F0 51%, #9EEFE1 100%);
+    background-size: 200% auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, .1);
+    transition: .5s;
+}
+.btn:hover {
+    background-position: right center;
+}
+
+.danger {
+    background-image: linear-gradient(to right, #ef9e9e 0%, #f03030 51%, #ef9e9e 100%);
+}

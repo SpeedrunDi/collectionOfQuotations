@@ -20,7 +20,3 @@
 .link:last-child {
     border-right: none;
 }
-
-.active {
-    color: gold;
-}

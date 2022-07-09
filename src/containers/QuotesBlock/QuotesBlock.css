@@ -1,0 +1,16 @@
+.quotesBlock {
+    display: flex;
+}
+
+.category {
+    width: 20%;
+}
+
+.quotes {
+    width: 80%;
+}
+
+.quotesTitle {
+    text-align: center;
+    text-transform: uppercase;
+}
