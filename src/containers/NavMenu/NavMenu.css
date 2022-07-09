@@ -1,0 +1,26 @@
+.navBlock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent!important;
+}
+
+.mainTitle {
+    color: white;
+    text-decoration: none;
+}
+
+.link {
+    color: white;
+    text-decoration: none;
+    border-right: 2px solid white;
+    padding: 3px 10px 5px;
+}
+
+.link:last-child {
+    border-right: none;
+}
+
+.active {
+    color: gold;
+}
